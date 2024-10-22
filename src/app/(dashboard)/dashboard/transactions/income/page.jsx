@@ -7,7 +7,11 @@ async function TransactionsPage() {
     const response = await axios.get(
       `${process.env.API_URL}/api/dashboard/income`
     );
-    incomes = response.data;
+    if (Array.isArray(response.data)) {
+      incomes = response.data;
+    } else {
+      console.error("Expected an array, but received:", response.data);
+    }
     console.log(incomes);
   } catch (error) {
     console.error("Error fetching incomes:", error);
