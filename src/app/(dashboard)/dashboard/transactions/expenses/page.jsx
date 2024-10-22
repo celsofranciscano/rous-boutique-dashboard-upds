@@ -1,3 +1,5 @@
+import ButtonAdd from "@/components/dashboard/common/ButtonAdd";
+
 async function TransactionsPage() {
   let expenses = [];
   try {
@@ -20,7 +22,8 @@ async function TransactionsPage() {
         </h1>
 
         <div className="flex justify-end">
-          <ButtonAdd name={"nuevo gasto"} />
+      
+          <ButtonAdd  name={"nuevo gasto"}  />
         </div>
 
         <section className="overflow-x-auto rounded-md">
