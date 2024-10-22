@@ -1,9 +1,9 @@
 import ButtonAdd from "@/components/dashboard/common/ButtonAdd";
-
+import axios from "axios";
 async function TransactionsPage() {
   let expenses = [];
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/expenses`);
+    const response = await axios.get(`${process.env.API_URL}/api/dashboard/expenses`);
     expenses = response.data;
   } catch (error) {
     console.error("Error fetching expenses:", error);
