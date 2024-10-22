@@ -16,7 +16,7 @@ async function TransactionsPage() {
       {/* Sección de totales */}
       <section className="p-4 border grid gap-4 dark:border-zinc-800 rounded-md">
         <h1 className="text-black dark:text-white font-normal text-lg pb-4 border-b dark:border-zinc-800">
-          Todo los Egresos
+          Todo los Egresos de Rous Boutique
         </h1>
 
         <div className="flex justify-end">
