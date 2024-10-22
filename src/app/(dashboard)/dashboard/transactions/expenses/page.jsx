@@ -1,12 +1,18 @@
 import ButtonAdd from "@/components/dashboard/common/ButtonAdd";
 import axios from "axios";
+
 async function TransactionsPage() {
   let expenses = [];
+
   try {
     const response = await axios.get(
       `${process.env.API_URL}/api/dashboard/expenses`
     );
-    expenses = response.data;
+    if (Array.isArray(response.data)) {
+      expenses = response.data;
+    } else {
+      console.error("Expected an array, but received:", response.data);
+    }
   } catch (error) {
     console.error("Error fetching expenses:", error);
   }
@@ -20,7 +26,7 @@ async function TransactionsPage() {
       {/* Sección de totales */}
       <section className="p-4 border grid gap-4 dark:border-zinc-800 rounded-md">
         <h1 className="text-black dark:text-white font-normal text-lg pb-4 border-b dark:border-zinc-800">
-          Todo los Egresos de Rous Boutique
+          Todos los Egresos de Rous Boutique
         </h1>
 
         <div className="flex justify-end">
@@ -33,7 +39,7 @@ async function TransactionsPage() {
               <tr>
                 <th className="px-6 py-3 text-white">ID</th>
                 <th className="px-6 py-3 text-white">Fecha</th>
-                <th className="px-6 py-3 text-white">Descripcion</th>
+                <th className="px-6 py-3 text-white">Descripción</th>
                 <th className="px-6 py-3 text-white">Total</th>
               </tr>
             </thead>
