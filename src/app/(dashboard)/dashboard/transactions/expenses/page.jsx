@@ -3,7 +3,9 @@ import axios from "axios";
 async function TransactionsPage() {
   let expenses = [];
   try {
-    const response = await axios.get(`${process.env.API_URL}/api/dashboard/expenses`);
+    const response = await axios.get(
+      `${process.env.API_URL}/api/dashboard/expenses`
+    );
     expenses = response.data;
   } catch (error) {
     console.error("Error fetching expenses:", error);
@@ -22,8 +24,7 @@ async function TransactionsPage() {
         </h1>
 
         <div className="flex justify-end">
-      
-          <ButtonAdd  name={"nuevo gasto"}  />
+          <ButtonAdd name={"nuevo gasto"} />
         </div>
 
         <section className="overflow-x-auto rounded-md">
@@ -61,7 +62,10 @@ async function TransactionsPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="px-6 py-4 text-center text-zinc-400">
+                  <td
+                    colSpan="4"
+                    className="px-6 py-4 text-center text-zinc-400"
+                  >
                     No hay egresos disponibles
                   </td>
                 </tr>

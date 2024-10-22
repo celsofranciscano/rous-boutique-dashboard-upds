@@ -4,8 +4,11 @@ async function TransactionsPage() {
   let incomes = [];
 
   try {
-    const response = await axios.get(`${process.env.API_URL}/api/dashboard/income`);
+    const response = await axios.get(
+      `${process.env.API_URL}/api/dashboard/income`
+    );
     incomes = response.data;
+    console.log(incomes);
   } catch (error) {
     console.error("Error fetching incomes:", error);
     // Puedes optar por mostrar un mensaje de error o un array vacío
@@ -58,7 +61,10 @@ async function TransactionsPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="px-6 py-4 text-zinc-800 dark:text-zinc-400 text-center">
+                  <td
+                    colSpan="4"
+                    className="px-6 py-4 text-zinc-800 dark:text-zinc-400 text-center"
+                  >
                     No se encontraron ingresos
                   </td>
                 </tr>
