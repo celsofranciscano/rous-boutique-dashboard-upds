@@ -95,7 +95,7 @@ model tbassists {
 
 model tbcustomers {
   PK_customer  Int       @id @default(autoincrement())
-  CI           String?   @db.VarChar(20)
+  CI           String?   @unique @db.VarChar(20)
   firstName    String    @db.VarChar(80)
   lastName     String    @db.VarChar(80)
   email        String?   @unique @db.VarChar(255)

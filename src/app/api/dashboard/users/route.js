@@ -2,9 +2,21 @@ import { NextResponse } from "next/server";
 import prisma from "@/libs/db";
 import bcrypt from "bcrypt";
 
+
 export async function GET() {
   try {
-    const users = await prisma.tbusers.findMany();
+    const users = await prisma.tbusers.findMany({
+      select: {
+        PK_user: true,
+        FK_role: true,
+        CI: true,
+        firstName: true,  
+        lastName: true,
+        email: true,
+        status: true,
+      },
+    });
+
     return NextResponse.json(users);
   } catch (error) {
     return NextResponse.json(
@@ -17,6 +29,7 @@ export async function GET() {
     );
   }
 }
+
 
 
 export async function POST(request) {

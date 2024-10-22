@@ -1,4 +1,4 @@
-import Table from "@/components/dashboard/common/Table";
+import Table from "@/components/dashboard/table/Table";
 function SizesPage() {
   const columns = ["ID", "Talla", "Estado", "Acciones"];
 

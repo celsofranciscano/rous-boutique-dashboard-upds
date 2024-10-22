@@ -1,4 +1,4 @@
-import Table from "@/components/dashboard/common/Table";
+import Table from "@/components/dashboard/table/Table";
 
 function RolesPage() {
   const columns = ["ID", "Rol", "Estado", "Acciones"];

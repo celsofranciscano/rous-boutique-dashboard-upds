@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import CSVButton from "./CSVButton";
+import GeneratePdfButton from "./GeneratePdf";
 
-
-function Table({ url, columns, rows,name }) {
+function Table({ url, columns, rows, name }) {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
@@ -15,7 +16,6 @@ function Table({ url, columns, rows,name }) {
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
 
   const pathname = usePathname();
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,6 +118,10 @@ function Table({ url, columns, rows,name }) {
           </svg>
         </div>
 
+        <GeneratePdfButton data={data} />
+
+        <CSVButton data={data} />
+
         {/* Filtro por estado como select */}
         <select
           className="p-2 rounded-md border dark:border-zinc-800 dark:bg-zinc-950 dark:text-white"
@@ -134,7 +138,7 @@ function Table({ url, columns, rows,name }) {
           className=" flex gap-2 bg-white text-black px-4 py-2 rounded-md"
         >
           <span>Agregar {name}</span>
-          
+
           <svg
             className="w-6 h-6 text-black"
             aria-hidden="true"
