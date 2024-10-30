@@ -20,7 +20,7 @@ async function DetailPage({ params }) {
   });
 
   // Obtener el primer día y el último día del mes según el primer registro
-  const firstDate = new Date(assists[0].day);
+  const firstDate = new Date(assists[0]?.day);
   const firstDay = new Date(firstDate.getFullYear(), firstDate.getMonth(), 1);
   const lastDay = new Date(firstDate.getFullYear(), firstDate.getMonth() + 1, 0);
 

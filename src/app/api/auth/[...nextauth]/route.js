@@ -1,3 +1,4 @@
+// authOptions.js
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/libs/db";
@@ -8,65 +9,50 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "email",
-          type: "text",
-        },
-        password: {
-          label: "password",
-          type: "password",
-        },
+        email: { label: "email", type: "text" },
+        password: { label: "password", type: "password" },
       },
-      async authorize(credentials, req) {
-        // Buscar al usuario en la base de datos por email
+      async authorize(credentials) {
         const userFound = await prisma.tbusers.findUnique({
-          where: {
-            email: credentials.email,
-          },
+          where: { email: credentials.email },
+          include: { tbroles: true },
         });
 
-        // Si el usuario no existe, lanzar un error
-        if (!userFound) throw new Error("No existe el usuario");
+        if (!userFound) throw new Error("Usuario no encontrado");
 
-        // Comparar el password con el almacenado en la base de datos usando bcrypt
-        const matchPassword = await bcrypt.compare(
-          credentials.password,
-          userFound.password
-        );
+        const matchPassword = await bcrypt.compare(credentials.password, userFound.password);
+        if (!matchPassword) throw new Error("La contraseña es incorrecta");
 
-        // Si la contraseña es incorrecta, lanzar un error
-        if (!matchPassword) throw new Error("La contraseña está incorrecta");
+        if (userFound.status === false) throw new Error("Tu cuenta está inactiva");
 
-        // Devolver el usuario si se encuentra y la contraseña es correcta
         return {
-          id: userFound.PK_user,
-          name: userFound.firstName,
           email: userFound.email,
+          name: `${userFound.firstName} ${userFound.lastName}`,
           image: userFound.profileImage,
+          role: userFound.tbroles.role,
         };
       },
     }),
   ],
-  callbacks: {
-    async signIn({ user }) {
-      // Verificar si el usuario existe en la base de datos
-      const existingUser = await prisma.tbusers.findUnique({
-        where: {
-          email: user.email,
-        },
-      });
-
-      // Si no existe, lanzar un error y no permitir el inicio de sesión
-      if (!existingUser) {
-        throw new Error("No se permite registrar un nuevo usuario");
-      }
-
-      return true; // Devolver true para permitir el inicio de sesión
-    },
-  },
   pages: {
     signIn: "/auth/login",
   },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        // Añadir el rol al token si el usuario está presente
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.role = token.role; // Esto incluye el JWT completo
+      session.user.iat = token.iat; // Esto incluye el JWT completo
+      session.user.exp = token.exp; // Esto incluye el JWT completo
+      return session;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

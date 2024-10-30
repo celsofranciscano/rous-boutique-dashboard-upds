@@ -13,6 +13,8 @@
     "@prisma/client": "^5.20.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "chart.js": "^4.4.5",
+    "jsbarcode": "^3.11.6",
     "next": "14.2.14",
     "next-auth": "^4.24.8",
     "pdf-lib": "^1.17.1",

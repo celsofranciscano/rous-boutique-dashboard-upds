@@ -17,6 +17,8 @@ function CreateProduct() {
   const [errorMessage, setErrorMessage] = useState("");
   const [sizes, setSizes] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [imageUrls, setImageUrls] = useState([""]); // Estado para almacenar múltiples URLs de imágenes
+
 
   useEffect(() => {
     async function getSizes() {
@@ -33,10 +35,27 @@ function CreateProduct() {
     getSubcategories();
   }, []);
 
+  function handleImageChange(index, value) {
+    const newImageUrls = [...imageUrls];
+    newImageUrls[index] = value;
+    setImageUrls(newImageUrls);
+  }
+
+  function addImageUrlField() {
+    setImageUrls([...imageUrls, ""]);
+  }
+
+  function removeImageUrlField(index) {
+    setImageUrls(imageUrls.filter((_, i) => i !== index));
+  }
+
   async function onSubmit(data) {
+    console.log(data)
     setIsLoading(true);
     setSuccessMessage("");
     setErrorMessage("");
+     // Agregar las URLs de imágenes al objeto de datos
+  data.images = imageUrls;
 
     try {
       const result = await axios.post("/api/dashboard/products", data);
@@ -108,27 +127,6 @@ function CreateProduct() {
             )}
           </label>
 
-          {/* SKU */}
-          <label className="flex flex-col gap-1">
-            SKU *
-            <input
-              type="text"
-              className="input-dark"
-              {...register("SKU", {
-                required: {
-                  value: true,
-                  message: "El campo SKU es obligatorio",
-                },
-                maxLength: {
-                  value: 50,
-                  message: "El SKU no puede exceder los 50 caracteres",
-                },
-              })}
-            />
-            {errors.SKU && (
-              <span className="text-sm text-red-500">{errors.SKU.message}</span>
-            )}
-          </label>
 
           {/* URL del Producto */}
           <label className="flex flex-col gap-1">
@@ -186,25 +184,39 @@ function CreateProduct() {
             />
           </label>
 
-          {/* Stock */}
-          <label className="flex flex-col gap-1">
-            Stock *
-            <input
-              type="number"
-              className="input-dark"
-              {...register("stock", {
-                required: {
-                  value: true,
-                  message: "El campo stock es obligatorio",
-                },
-              })}
-            />
-            {errors.stock && (
-              <span className="text-sm text-red-500">
-                {errors.stock.message}
-              </span>
-            )}
+           {/* Campo para URLs de Imágenes */}
+           <label className="flex flex-col gap-1">
+            URLs de Imágenes
+            {imageUrls.map((url, index) => (
+              <div key={index} className="flex gap-2 items-center">
+                <input
+                  type="text"
+                  className="input-dark flex-1"
+                  placeholder="URL de la imagen"
+                  value={url}
+                  onChange={(e) => handleImageChange(index, e.target.value)}
+                />
+                {index > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => removeImageUrlField(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    &times;
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addImageUrlField}
+              className="text-blue-500 hover:text-blue-700 mt-2"
+            >
+              + Añadir otra imagen
+            </button>
           </label>
+
+       
 
           {/* Tamaño */}
           <label className="flex flex-col gap-1">

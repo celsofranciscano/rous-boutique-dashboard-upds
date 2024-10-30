@@ -82,6 +82,7 @@ export async function POST(request) {
     // Retornar respuesta exitosa con el cliente creado
     return NextResponse.json(newCustomer);
   } catch (error) {
+    console.log(error.message)
     return NextResponse.json(
       { message: "Error interno del servidor" },
       { status: 500 }

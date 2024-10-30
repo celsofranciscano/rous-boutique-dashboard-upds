@@ -1,5 +1,6 @@
 import axios from "axios";
 import Image from "next/image";
+
 async function DetailPage({ params }) {
   const responseCustomer = await axios.get(
     `${process.env.API_URL}/api/dashboard/customers/${params.PK_customer}`
@@ -14,13 +15,13 @@ async function DetailPage({ params }) {
   });
 
   return (
-    <section className="grid  gap-4 ">
+    <section className="grid gap-4">
       <div className="py-4 p-2">
         <h1 className="text-2xl text-black dark:text-white font-medium">
           Cliente
         </h1>
       </div>
-      {/* Sección de información del administrador */}
+      {/* Sección de información del cliente */}
       <section className="p-4 border grid gap-4 dark:border-zinc-800 rounded-md">
         <h1 className="text-black dark:text-white font-normal text-lg pb-4 border-b dark:border-zinc-800">
           Información del cliente
@@ -32,7 +33,7 @@ async function DetailPage({ params }) {
               src={customer?.profileImage}
               width={80}
               height={80}
-              alt="perfil"
+              alt="Perfil"
             />
           ) : (
             <div className="w-20 h-20 rounded-full bg-zinc-200 dark:bg-zinc-950 flex items-center justify-center">
@@ -46,13 +47,16 @@ async function DetailPage({ params }) {
               {customer.firstName} {customer.lastName}
             </h2>
             <p className="text text-zinc-500 dark:text-zinc-400">
-              {customer.email}
+              {customer.email || "Sin correo"}
             </p>
             <p className="text text-zinc-500 dark:text-zinc-500">
-              CI: {customer.CI}
+              CI: {customer.CI || "Sin CI"}
             </p>
             <p className="text-sm text-zinc-500 dark:text-zinc-500">
               Creado el {createdAt}
+            </p>
+            <p className="text-sm text-zinc-500 dark:text-zinc-500">
+              Estado: {customer.status ? "Activo" : "Inactivo"}
             </p>
           </div>
         </div>

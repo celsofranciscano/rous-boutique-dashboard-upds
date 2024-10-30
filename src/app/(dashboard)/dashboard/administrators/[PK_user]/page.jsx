@@ -21,7 +21,7 @@ async function DetailPage({ params }) {
     month: "long",
     day: "numeric",
   });
-  const dateOfBirth = new Date(userDetails.dateOfBirth).toLocaleDateString(
+  const dateOfBirth = new Date(userDetails?.dateOfBirth).toLocaleDateString(
     "es-ES",
     {
       year: "numeric",
@@ -29,7 +29,7 @@ async function DetailPage({ params }) {
       day: "numeric",
     }
   );
-  const hireDate = new Date(userDetails.hireDate).toLocaleDateString("es-ES", {
+  const hireDate = new Date(userDetails?.hireDate).toLocaleDateString("es-ES", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -95,7 +95,7 @@ async function DetailPage({ params }) {
               Número de Teléfono
               <input
                 type="text"
-                value={userDetails.phoneNumber}
+                value={userDetails?.phoneNumber}
                 disabled
                 className="input-dark"
               />
@@ -106,7 +106,7 @@ async function DetailPage({ params }) {
               Dirección
               <input
                 type="text"
-                value={userDetails.address}
+                value={userDetails?.address}
                 disabled
                 className="input-dark"
               />
@@ -139,7 +139,7 @@ async function DetailPage({ params }) {
               Cargo
               <input
                 type="text"
-                value={userDetails.position}
+                value={userDetails?.position}
                 disabled
                 className="input-dark"
               />
@@ -150,7 +150,7 @@ async function DetailPage({ params }) {
               Salario
               <input
                 type="text"
-                value={`Bs ${userDetails.salary}`}
+                value={`Bs ${userDetails?.salary}`}
                 disabled
                 className="input-dark"
               />
@@ -161,7 +161,7 @@ async function DetailPage({ params }) {
               Estado
               <input
                 type="text"
-                value={userDetails.status ? "Activo" : "Inactivo"}
+                value={userDetails?.status ? "Activo" : "Inactivo"}
                 disabled
                 className="input-dark"
               />

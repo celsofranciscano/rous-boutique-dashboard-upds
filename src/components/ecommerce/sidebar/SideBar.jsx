@@ -11,7 +11,6 @@ async function SideBar() {
   const links = [
     { name: "Inicio", path: "/" },
     { name: "Tienda", path: "/tienda" },
-    { name: "Categoria", path: "/categorias" },
     { name: "Contacto", path: "/contacto" },
   ];
   return (
@@ -98,15 +97,7 @@ async function SideBar() {
                 <span>Tienda</span>
               </Link>
             </li>
-            <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
-              <Link
-                onClick={handlebtnclick}
-                href="/categorias"
-                className="flex items-center gap-3"
-              >
-                <span>Categorias</span>
-              </Link>
-            </li>
+       
             <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
               <Link
                 onClick={handlebtnclick}

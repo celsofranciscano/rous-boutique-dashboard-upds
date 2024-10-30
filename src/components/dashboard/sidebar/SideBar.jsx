@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { useEffect } from "react";
 
+import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import DarkMode from "@/components/common/DarkMode";
@@ -44,6 +44,7 @@ function Sidebar() {
         </a>
 
         <div className="flex items-center justify-center gap-4">
+          <p>{session?.user?.role}</p>
           {session?.user?.image ? (
             <Image
               onClick={btnclickperfil}
@@ -292,7 +293,7 @@ function Sidebar() {
           <li onClick={btnclickperfil}>
             <Link
               onClick={btnclickperfil}
-              href="/learn/profile"
+              href="/dashboard/profile"
               className="flex items-center"
             >
               <svg

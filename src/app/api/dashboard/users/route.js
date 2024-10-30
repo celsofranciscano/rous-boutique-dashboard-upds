@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/libs/db";
 import bcrypt from "bcrypt";
 
-
 export async function GET() {
+
   try {
     const users = await prisma.tbusers.findMany({
       select: {

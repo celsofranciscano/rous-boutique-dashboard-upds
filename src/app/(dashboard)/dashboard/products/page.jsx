@@ -3,10 +3,10 @@ function ProductsPage() {
   const columns = [
     "ID",
     "Producto",
-    "SKU",
+    "Barcode",
     "Precio",
     "Oferta",
-    "Stock",
+    "Existencia",
     "Estado",
     "Acciones",
   ];
@@ -14,10 +14,10 @@ function ProductsPage() {
   const rows = [
     "PK_product",
     "name",
-    "SKU",
+    "barcode",
     "regularPrice",
     "offerPrice",
-    "stock",
+    "isExisting",
     "status",
   ];
 

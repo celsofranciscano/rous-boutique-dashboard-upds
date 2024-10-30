@@ -86,22 +86,6 @@ CREATE TABLE "tbassists" (
 );
 
 -- CreateTable
-CREATE TABLE "tbcustomers" (
-    "PK_customer" SERIAL NOT NULL,
-    "CI" VARCHAR(20),
-    "firstName" VARCHAR(80) NOT NULL,
-    "lastName" VARCHAR(80) NOT NULL,
-    "email" VARCHAR(255),
-    "password" VARCHAR(255),
-    "profileImage" VARCHAR(255),
-    "status" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
-
-    CONSTRAINT "tbcustomers_pkey" PRIMARY KEY ("PK_customer")
-);
-
--- CreateTable
 CREATE TABLE "tbcategories" (
     "PK_category" SERIAL NOT NULL,
     "name" VARCHAR(50) NOT NULL,
@@ -140,19 +124,34 @@ CREATE TABLE "tbsizes" (
 );
 
 -- CreateTable
+CREATE TABLE "tbcustomers" (
+    "PK_customer" SERIAL NOT NULL,
+    "CI" VARCHAR(20),
+    "firstName" VARCHAR(80) NOT NULL,
+    "lastName" VARCHAR(80) NOT NULL,
+    "email" VARCHAR(255),
+    "password" VARCHAR(255),
+    "profileImage" VARCHAR(255),
+    "status" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "tbcustomers_pkey" PRIMARY KEY ("PK_customer")
+);
+
+-- CreateTable
 CREATE TABLE "tbproducts" (
     "PK_product" SERIAL NOT NULL,
     "FK_subcategory" INTEGER NOT NULL,
     "FK_size" INTEGER NOT NULL,
-    "SKU" VARCHAR(50) NOT NULL,
+    "barcode" VARCHAR(12) NOT NULL,
     "name" VARCHAR(80) NOT NULL,
     "urlProduct" VARCHAR(80) NOT NULL,
     "regularPrice" DECIMAL(10,2) NOT NULL,
     "offerPrice" DECIMAL(10,2),
-    "stock" INTEGER NOT NULL,
     "description" VARCHAR(255),
     "images" TEXT[],
-    "urlQR" VARCHAR(255),
+    "isExisting" BOOLEAN NOT NULL DEFAULT true,
     "status" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated" TIMESTAMP(3),
@@ -177,7 +176,7 @@ CREATE TABLE "tbsales" (
     "PK_sale" SERIAL NOT NULL,
     "FK_customer" INTEGER NOT NULL,
     "FK_salestatus" INTEGER NOT NULL,
-    "totalAmount" DECIMAL(10,2) NOT NULL,
+    "totalAmount" DECIMAL(10,2),
     "status" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
@@ -190,9 +189,6 @@ CREATE TABLE "tbsaledetails" (
     "PK_saledetail" SERIAL NOT NULL,
     "FK_sale" INTEGER NOT NULL,
     "FK_product" INTEGER NOT NULL,
-    "quantity" INTEGER NOT NULL,
-    "unitPrice" DECIMAL(10,2) NOT NULL,
-    "subtotal" DECIMAL(10,2) NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
@@ -203,7 +199,9 @@ CREATE TABLE "tbsaledetails" (
 -- CreateTable
 CREATE TABLE "tbincome" (
     "PK_income" SERIAL NOT NULL,
+    "FK_sale" INTEGER NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
+    "products" TEXT[],
     "description" VARCHAR(255),
     "total" DECIMAL(10,2) NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT true,
@@ -236,10 +234,7 @@ CREATE UNIQUE INDEX "tbusers_CI_key" ON "tbusers"("CI");
 CREATE UNIQUE INDEX "tbusers_email_key" ON "tbusers"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "tbcustomers_CI_key" ON "tbcustomers"("CI");
-
--- CreateIndex
-CREATE UNIQUE INDEX "tbcustomers_email_key" ON "tbcustomers"("email");
+CREATE UNIQUE INDEX "tbuserdetails_FK_user_key" ON "tbuserdetails"("FK_user");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tbcategories_name_key" ON "tbcategories"("name");
@@ -257,7 +252,13 @@ CREATE UNIQUE INDEX "tbsubcategories_urlSubcategory_key" ON "tbsubcategories"("u
 CREATE UNIQUE INDEX "tbsizes_name_key" ON "tbsizes"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "tbproducts_SKU_key" ON "tbproducts"("SKU");
+CREATE UNIQUE INDEX "tbcustomers_CI_key" ON "tbcustomers"("CI");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "tbcustomers_email_key" ON "tbcustomers"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "tbproducts_barcode_key" ON "tbproducts"("barcode");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tbproducts_urlProduct_key" ON "tbproducts"("urlProduct");
@@ -300,3 +301,6 @@ ALTER TABLE "tbsaledetails" ADD CONSTRAINT "tbsaledetails_FK_sale_fkey" FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE "tbsaledetails" ADD CONSTRAINT "tbsaledetails_FK_product_fkey" FOREIGN KEY ("FK_product") REFERENCES "tbproducts"("PK_product") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "tbincome" ADD CONSTRAINT "tbincome_FK_sale_fkey" FOREIGN KEY ("FK_sale") REFERENCES "tbsales"("PK_sale") ON DELETE RESTRICT ON UPDATE CASCADE;

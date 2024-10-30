@@ -4,7 +4,26 @@ import prisma from "@/libs/db";
 export async function GET() {
   try {
     const products = await prisma.tbproducts.findMany();
-    return NextResponse.json(products);
+    
+    // Transformar los nombres de los campos antes de retornar
+    const renamedProducts = products.map((product) => ({
+      PK_product: product.PK_product,
+      FK_subcategory: product.FK_subcategory,
+      FK_size: product.FK_size,
+      barcode: product.barcode,
+      name: product.name,
+      urlProduct: product.urlProduct,
+      regularPrice: product.regularPrice,
+      offerPrice: product.offerPrice,
+      description: product.description,
+      images: product.images,
+      isExisting: product.isExisting ? "Tienda":"Vendido",
+      status: product.status,
+      createdAt: product.createdAt,
+      updated: product.updated,
+    }));
+
+    return NextResponse.json(renamedProducts);
   } catch (error) {
     return NextResponse.json(
       {
@@ -19,35 +38,23 @@ export async function GET() {
 
 
 
-
-
 export async function POST(request) {
   try {
-    // Parsear el cuerpo de la solicitud
     const {
       name,
-      SKU,
       urlProduct,
       regularPrice,
       offerPrice,
-      stock,
       description,
       FK_size,
-      FK_subcategory
+      FK_subcategory,
+      imageUrls,  // Array de URLs de imágenes
     } = await request.json();
 
     // Validaciones de los campos requeridos
-    if (!name || !SKU || !urlProduct || !regularPrice || !stock || !FK_size || !FK_subcategory) {
+    if (!name || !urlProduct || !regularPrice || !FK_size || !FK_subcategory) {
       return NextResponse.json(
         { message: "Todos los campos obligatorios deben ser proporcionados" },
-        { status: 400 }
-      );
-    }
-
-    // Validaciones opcionales
-    if (SKU.length > 50) {
-      return NextResponse.json(
-        { message: "El SKU no puede exceder los 50 caracteres" },
         { status: 400 }
       );
     }
@@ -59,39 +66,51 @@ export async function POST(request) {
       );
     }
 
-    // Verificar si el producto ya existe basado en su SKU o URL
-    const existingProduct = await prisma.tbproducts.findFirst({
-      where: {
-        OR: [
-          { SKU: SKU ? SKU : undefined },
-          { urlProduct: urlProduct ? urlProduct : undefined }
-        ]
-      }
-    });
+    // Generar código de barras
+    async function generateBarcode() {
+      const lastProduct = await prisma.tbproducts.findFirst({
+        orderBy: { barcode: 'desc' },
+        select: { barcode: true }
+      });
 
-    if (existingProduct) {
-      return NextResponse.json(
-        { message: "El producto ya está registrado con ese SKU o URL" },
-        { status: 400 }
-      );
+      let barcode;
+      if (lastProduct && lastProduct.barcode) {
+        barcode = (BigInt(lastProduct.barcode) + 1n).toString().padStart(12, '0');
+      } else {
+        barcode = Math.floor(100000000000 + Math.random() * 900000000000).toString();
+      }
+
+      let existingBarcode = await prisma.tbproducts.findUnique({
+        where: { barcode }
+      });
+
+      while (existingBarcode) {
+        barcode = Math.floor(100000000000 + Math.random() * 900000000000).toString();
+        existingBarcode = await prisma.tbproducts.findUnique({
+          where: { barcode }
+        });
+      }
+
+      return barcode;
     }
+
+    const barcode = await generateBarcode();
 
     // Crear el nuevo producto
     const newProduct = await prisma.tbproducts.create({
       data: {
         name,
-        SKU,
+        barcode,
         urlProduct,
         regularPrice,
-        offerPrice: offerPrice ? offerPrice : null, // Aceptar oferta opcional
-        stock: Number(stock),
-        description: description ? description : null, // Aceptar descripción opcional
+        offerPrice: offerPrice || null,
+        description: description || null,
         FK_size: Number(FK_size),
-        FK_subcategory: Number(FK_subcategory)
+        FK_subcategory: Number(FK_subcategory),
+        images: imageUrls || []  // Guardar URLs de imágenes en el array
       }
     });
 
-    // Retornar respuesta exitosa con el producto creado
     return NextResponse.json(newProduct);
   } catch (error) {
     console.error("Error creando producto:", error);

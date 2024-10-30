@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation";
 import CSVButton from "./CSVButton";
 import GeneratePdfButton from "./GeneratePdf";
 
+
 function Table({ url, columns, rows, name }) {
+
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
