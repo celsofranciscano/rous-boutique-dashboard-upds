@@ -18,6 +18,10 @@ VALUES
 ('Recursos Humanos'),
 ('Auditor');
 
+INSERT INTO "tbusers" ("PK_user", "FK_role", "CI", "firstName", "lastName", "email", "password", "profileImage", "createdAt") VALUES
+(1, 1, '9510358', 'Celso', 'Franciscano Choque', 'celso@gmail.com', '$2b$10$t2NqXh7YNAOecW5zvKmIqefEOmfHciZSCNYRMQBmrIDCD4dz26C/q', NULL, '2024-10-30 09:35:23.055');
+
+
 -- Inserts para "tbusers"
 INSERT INTO "tbusers" ("FK_role", "CI", "firstName", "lastName", "email", "password", "profileImage")
 VALUES
