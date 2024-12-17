@@ -5,9 +5,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CSVButton from "./CSVButton";
 import GeneratePdfButton from "./GeneratePdf";
-
+import { useSession } from "next-auth/react";
 
 function Table({ url, columns, rows, name }) {
+  const { data: session } = useSession();
 
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -135,30 +136,32 @@ function Table({ url, columns, rows, name }) {
           <option value="Inactivos">Inactivos</option>
         </select>
 
-        <Link
-          href={`${pathname}/create`}
-          className=" flex gap-2 bg-white text-black px-4 py-2 rounded-md"
-        >
-          <span>Agregar {name}</span>
-
-          <svg
-            className="w-6 h-6 text-black"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
+        {["Rector", "Jefe de planta"].includes(session?.user?.role) && (
+          <Link
+            href={`${pathname}/create`}
+            className=" flex gap-2 bg-white text-black px-4 py-2 rounded-md"
           >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 12h14m-7 7V5"
-            />
-          </svg>
-        </Link>
+            <span>Agregar {name}</span>
+
+            <svg
+              className="w-6 h-6 text-black"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 12h14m-7 7V5"
+              />
+            </svg>
+          </Link>
+        )}
       </div>
 
       <div className="flex items-center justify-between ">

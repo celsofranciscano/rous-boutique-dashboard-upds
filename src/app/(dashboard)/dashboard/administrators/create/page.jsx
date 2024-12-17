@@ -37,7 +37,7 @@ function CreateUser() {
 
   return (
     <section className="grid gap-4">
-      <div className="py-4 p-2 ">
+      <div className="py-4 p-2">
         <h1 className="text-2xl text-black dark:text-white font-medium">
           Administradores
         </h1>
@@ -52,7 +52,6 @@ function CreateUser() {
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-1 md:grid-cols-3 gap-2 dark:text-zinc-400 text-zinc-500"
         >
-     
           {/* Nombre */}
           <label className="flex flex-col gap-1">
             Nombre
@@ -63,6 +62,14 @@ function CreateUser() {
                 required: {
                   value: true,
                   message: "Nombre requerido",
+                },
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: "El nombre solo puede contener letras",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "El nombre no puede tener más de 20 caracteres",
                 },
               })}
             />
@@ -84,6 +91,14 @@ function CreateUser() {
                   value: true,
                   message: "Apellido requerido",
                 },
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: "El apellido solo puede contener letras",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "El apellido no puede tener más de 20 caracteres",
+                },
               })}
             />
             {errors.lastName && (
@@ -93,8 +108,8 @@ function CreateUser() {
             )}
           </label>
 
-             {/* CI */}
-             <label className="flex flex-col gap-1">
+          {/* CI */}
+          <label className="flex flex-col gap-1">
             CI
             <input
               type="text"
@@ -104,12 +119,18 @@ function CreateUser() {
                   value: true,
                   message: "CI requerido",
                 },
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "El CI solo puede contener números (sin símbolos)",
+                },
+                maxLength: {
+                  value: 12,
+                  message: "El CI no puede tener más de 12 caracteres",
+                },
               })}
             />
             {errors.CI && (
-              <span className="text-sm text-red-500">
-                {errors.CI.message}
-              </span>
+              <span className="text-sm text-red-500">{errors.CI.message}</span>
             )}
           </label>
 
@@ -124,6 +145,10 @@ function CreateUser() {
                   value: true,
                   message: "Correo electrónico requerido",
                 },
+                maxLength: {
+                  value: 30,
+                  message: "El email no puede tener más de 30 caracteres",
+                },
               })}
             />
             {errors.email && (
@@ -133,8 +158,8 @@ function CreateUser() {
             )}
           </label>
 
-               {/* Selección de rol */}
-               <label className="flex flex-col gap-1">
+          {/* Selección de rol */}
+          <label className="flex flex-col gap-1">
             Rol
             <select
               className="input-dark"
@@ -151,7 +176,6 @@ function CreateUser() {
               <span className="text-sm text-red-500">Rol requerido</span>
             )}
           </label>
-
 
           {/* Contraseña */}
           <label className="flex flex-col gap-1">
@@ -178,7 +202,6 @@ function CreateUser() {
                   if (!/[0-9]/.test(value)) {
                     return "Debe tener al menos un número";
                   }
-        
                   return true;
                 },
               })}

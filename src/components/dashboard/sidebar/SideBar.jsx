@@ -10,6 +10,7 @@ import DarkMode from "@/components/common/DarkMode";
 function Sidebar() {
   // Contiene los datos del usuario
   const { data: session } = useSession();
+  // console.log(session?.user?.role);
 
   function handlebtnclick() {
     document.getElementById("sidebar")?.classList.toggle("hidden");
@@ -127,34 +128,37 @@ function Sidebar() {
                 <span>Inicio</span>
               </Link>
             </li>
-
-            <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
-              <Link
-                onClick={handlebtnclick}
-                href="/dashboard/administrators"
-                className="flex items-center gap-3"
-              >
-                <svg
-                  className="w-5 h-5 text-gray-800 dark:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
+            {["Rector"].includes(
+              session?.user?.role
+            ) && (
+              <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
+                <Link
+                  onClick={handlebtnclick}
+                  href="/dashboard/administrators"
+                  className="flex items-center gap-3"
                 >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeWidth="2"
-                    d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
-                  />
-                </svg>
+                  <svg
+                    className="w-5 h-5 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                      d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+                    />
+                  </svg>
 
-                <span>Administradores</span>
-              </Link>
-            </li>
-            <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
+                  <span>Administradores</span>
+                </Link>
+              </li>
+            )}
+            {/* <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
               <Link
                 onClick={handlebtnclick}
                 href="/dashboard/sales"
@@ -180,35 +184,41 @@ function Sidebar() {
 
                 <span>Ventas</span>
               </Link>
-            </li>
-            <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
-              <Link
-                onClick={handlebtnclick}
-                href="/dashboard/products"
-                className="flex items-center gap-3"
-              >
-                <svg
-                  className="w-5 h-5 text-gray-800 dark:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15.583 8.445h.01M10.86 19.71l-6.573-6.63a.993.993 0 0 1 0-1.4l7.329-7.394A.98.98 0 0 1 12.31 4l5.734.007A1.968 1.968 0 0 1 20 5.983v5.5a.992.992 0 0 1-.316.727l-7.44 7.5a.974.974 0 0 1-1.384.001Z"
-                  />
-                </svg>
+            </li> */}
 
-                <span>Productos</span>
-              </Link>
-            </li>
-            <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
+            {["Rector", "Secretaria", "Jefe de planta"].includes(
+              session?.user?.role
+            ) && (
+              <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
+                <Link
+                  onClick={handlebtnclick}
+                  href="/dashboard/products"
+                  className="flex items-center gap-3"
+                >
+                  <svg
+                    className="w-5 h-5 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.583 8.445h.01M10.86 19.71l-6.573-6.63a.993.993 0 0 1 0-1.4l7.329-7.394A.98.98 0 0 1 12.31 4l5.734.007A1.968 1.968 0 0 1 20 5.983v5.5a.992.992 0 0 1-.316.727l-7.44 7.5a.974.974 0 0 1-1.384.001Z"
+                    />
+                  </svg>
+
+                  <span>Productos</span>
+                </Link>
+              </li>
+            )}
+
+            {/* <li className=" hover:bg-blue-100  dark:hover:bg-zinc-950 rounded-md px-4 py-2">
               <Link
                 onClick={handlebtnclick}
                 href="/dashboard/customers"
@@ -260,7 +270,7 @@ function Sidebar() {
 
                 <span>Transacciones</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </aside>
